@@ -7,9 +7,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.telephony.TelephonyManager
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -18,9 +16,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.gridlayout.widget.GridLayout
-import android.widget.ImageButton
 import android.widget.EditText
 import android.widget.Button
+import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
@@ -49,16 +47,9 @@ class MainActivity : AppCompatActivity() {
         prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         gatesContainer = findViewById(R.id.gatesContainer)
         
-        // בדוק הרשאות
         requestPhonePermission()
-        
-        // טען נתונים
         loadGates()
-        
-        // בנה את הממשק
         buildUI()
-        
-        // הוסף כפתור הגדרות
         setupSettingsButton()
     }
 
@@ -118,7 +109,6 @@ class MainActivity : AppCompatActivity() {
     private fun buildUI() {
         gatesContainer.removeAllViews()
         gatesContainer.columnCount = 2
-        gatesContainer.rowCount = (gatesList.size + 1) / 2
         
         gatesList.forEach { gate ->
             val button = createGateButton(gate)
@@ -141,15 +131,13 @@ class MainActivity : AppCompatActivity() {
             )
             setBackgroundColor(ContextCompat.getColor(this@MainActivity, R.color.gate_button_bg))
             elevation = 8f
-            
-            val padding = 16
-            setPadding(padding, padding, padding, padding)
+            setPadding(16, 16, 16, 16)
             
             setOnClickListener {
                 callGate(gate)
             }
             
-            val emojiView = android.widget.TextView(this@MainActivity).apply {
+            val emojiView = TextView(this@MainActivity).apply {
                 text = gate.emoji
                 textSize = 48f
                 layoutParams = LinearLayout.LayoutParams(
@@ -159,7 +147,7 @@ class MainActivity : AppCompatActivity() {
                 textAlignment = View.TEXT_ALIGNMENT_CENTER
             }
             
-            val nameView = android.widget.TextView(this@MainActivity).apply {
+            val nameView = TextView(this@MainActivity).apply {
                 text = gate.name
                 textSize = 16f
                 setTextColor(ContextCompat.getColor(this@MainActivity, R.color.text_primary))
